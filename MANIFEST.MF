@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Class-Path: .
+Created-By: Ivan Santiago Di Gruttola
+Main-Class: Main
+X-COMMENT: Proyecto echo por Java para facilitar la tarea de Generar Archivos y carpetas , Lectura de Ficheros y Moverse por diferentes Rutas
