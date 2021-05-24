@@ -1,12 +1,15 @@
 
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;		//Lib
 import java.io.File;			//file management
 import java.io.IOException;
 import java.awt.Dimension;
 //		Reader
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 
 
 public class Archivos {
@@ -67,62 +70,58 @@ public class Archivos {
 
     //Lectura de Archivos
     public void LeerFicheros(String direccion){
-        String Name = JOptionPane.showInputDialog(null,"Colocar la extencion si no es Block de Nota\nNombre Fichero: ");
-        
-        if(!Name.contains("."))
-            Name = Name + ".txt";
-        
-        File archivo = new File(direccion + "\\" + Name);
-  
-        if(archivo.exists()){
-            FileReader Leer;
-            BufferedReader lea;
-  
-            String Texto = "", bfRead;
-  
-            try{
-                Leer = new FileReader(archivo.getAbsolutePath());
-                lea = new BufferedReader(Leer);
-                
-                String completo = "";
-            while( (bfRead = lea.readLine()) != null){
-                Texto += bfRead; 			//Texto = Texto + Leer
-                completo = completo + Texto;
-                completo += "\n";
-                Texto = "";
-            }
-            //Mostramos lo Leido en un CampoDeTexto
-            javax.swing.JTextArea textArea = new javax.swing.JTextArea(completo);
-            javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane(textArea);  
-            textArea.setLineWrap(true);         //Metodo Nuevo
-            textArea.setWrapStyleWord(true);    //Metodo Nuevo
-            scrollPane.setPreferredSize( new Dimension( 500, 500 ) );   //MetodoNuevo
-            JOptionPane.showMessageDialog(null,scrollPane);
+    	
+    	JFileChooser chooser = new JFileChooser(direccion);
+    	chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+    	int i = chooser.showSaveDialog(null);
+    	
+    	if( i == chooser.APPROVE_OPTION) {
+    		File archivo = new File(chooser.getSelectedFile().getAbsolutePath());
+    		
+    	     FileReader Leer;
+             BufferedReader lea;
+   
+             String Texto = "", bfRead;
+   
+             try{
+                 Leer = new FileReader(archivo.getAbsolutePath());
+                 lea = new BufferedReader(Leer);
+                 
+                 String completo = "";
+             while( (bfRead = lea.readLine()) != null){
+                 Texto += bfRead; 			//Texto = Texto + Leer
+                 completo = completo + Texto;
+                 completo += "\n";
+                 Texto = "";
+             }
+             //Mostramos lo Leido en un CampoDeTexto
+             javax.swing.JTextArea textArea = new javax.swing.JTextArea(completo);
+             javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane(textArea);  
+             textArea.setLineWrap(true);         //Metodo Nuevo
+             textArea.setWrapStyleWord(true);    //Metodo Nuevo
+             scrollPane.setPreferredSize( new Dimension( 500, 500 ) );   //MetodoNuevo
+             JOptionPane.showMessageDialog(null,scrollPane);
 
-            }catch(Exception e){JOptionPane.showMessageDialog(null,"Error: " + e);}
-  
-        }else
-            JOptionPane.showMessageDialog(null,"No Existe");
+             }catch(Exception e){JOptionPane.showMessageDialog(null,"Error: " + e);}
+   
+    	}
 
      }
-
-
-
 
 
     //Moverse de Ruta
     public String MoveFile(String direccion){
-        File UbicacionActual = new File(direccion);
         
-        String lugar = JOptionPane.showInputDialog("Ruta: " + UbicacionActual.getAbsolutePath() + "\nCopie la Ruta y dejelo en donde quiera transladarse");
-        
-        File Verificar = new File(lugar);
-        
-        if(Verificar.isDirectory() == false){
-            JOptionPane.showMessageDialog(null,"Error de la Ruta");
-            return lugar = "";
-        }else
-           return lugar;
+    	JFileChooser chooser = new JFileChooser(direccion);
+    	chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+    	int i = chooser.showSaveDialog(null);
+    	
+    	if( i == chooser.APPROVE_OPTION) {
+    		return chooser.getSelectedFile().getAbsolutePath();
+    	}else
+    		return "";
+    	
      }
      
 }
+
